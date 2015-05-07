@@ -17,6 +17,7 @@ class ViewController: UIViewController,MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     
     var annotations = [MKPointAnnotation]()
+    var polylines = [CLLocationCoordinate2D]()
     
     // MARK: View
     
@@ -33,6 +34,7 @@ class ViewController: UIViewController,MKMapViewDelegate {
             mapView.showsUserLocation = true
         }
         self.addAnnotation()
+        self.addOverlay()
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -54,23 +56,38 @@ class ViewController: UIViewController,MKMapViewDelegate {
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
         
-        mapView.showAnnotations(annotations, animated: true)
+        
     }
     // MARK: Data
     func addAnnotation(){
     
         var locationCoordinate2D: CLLocationCoordinate2D = mapView.userLocation.coordinate
-        for index in 1...100{
+        for index in 1...10{
             let annotation:MKPointAnnotation = MKPointAnnotation()
             var longitude: String = String(stringInterpolation: "37.\(index)78834")
             
             annotation.coordinate = CLLocationCoordinate2DMake(longitude._bridgeToObjectiveC().doubleValue, 122.406417)
             annotations.append(annotation)
         }
+        
+        mapView.addAnnotations(annotations)
     }
     
     func addOverlay(){
     
+        var locationCoordinate2D: CLLocationCoordinate2D = mapView.userLocation.coordinate
+        for index in 1...12{
+        
+            var latitude: String = String(stringInterpolation: "37.\(index)78834")
+            var longitude: String = String(stringInterpolation: "122.\(index)406417")
+    
+            
+            polylines.append(CLLocationCoordinate2DMake(latitude._bridgeToObjectiveC().doubleValue, longitude._bridgeToObjectiveC().doubleValue))
+        }
+        
+        var polyline:MKPolyline = MKPolyline(coordinates: &polylines, count: polylines.count)
+    
+        mapView.addOverlay(polyline)
     }
     
     //MARK: MKMapViewDelegate
@@ -89,14 +106,15 @@ class ViewController: UIViewController,MKMapViewDelegate {
     
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
         
-//        if(overlay.isKindOfClass(MKPolylineRenderer.classForCoder())){
-//        
-//            var aRenderer: MKPolylineRenderer = MKPolylineRenderer(polyline: (MKPolyline)overlay))
-//            aRenderer.fillColor = UIColor.cyanColor().colorWithAlphaComponent(0.2)
-//            aRenderer.strokeColor = UIColor.blueColor().colorWithAlphaComponent(0.7)
-//            aRenderer.lineWidth = 3
-//            return aRenderer
-//        }
+        if(overlay.isKindOfClass(MKPolyline.classForCoder())){
+        
+            let polyline = overlay as! MKPolyline
+            var aRenderer: MKPolylineRenderer = MKPolylineRenderer(polyline: polyline)
+            aRenderer.fillColor = UIColor.cyanColor().colorWithAlphaComponent(0.2)
+            aRenderer.strokeColor = UIColor.blueColor().colorWithAlphaComponent(0.7)
+            aRenderer.lineWidth = 3
+            return aRenderer
+        }
         return nil;
     }
 
