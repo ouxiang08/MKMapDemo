@@ -7,15 +7,20 @@
 //
 
 import UIKit
+import CoreLocation
+
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate {
 
     var window: UIWindow?
-
+    var locationManager: CLLocationManager!
+    var location: CLLocation!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        self.startStandardUpdates()
+        
         return true
     }
 
@@ -42,5 +47,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+    func startStandardUpdates(){
+        
+        if(nil == locationManager){
+            locationManager = CLLocationManager()
+        }
+        
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
+        locationManager.distanceFilter = 500
+
+        locationManager.startUpdatingLocation()        
+
+    }
+    
+    //MARK: CLLocationManagerDelegate
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        
+        let location = locations.last as! CLLocation
+        
+         NSLog("locationManager")
+    }
 }
 
