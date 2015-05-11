@@ -64,9 +64,9 @@ class ViewController: UIViewController,MKMapViewDelegate {
         var locationCoordinate2D: CLLocationCoordinate2D = mapView.userLocation.coordinate
         for index in 1...10{
             let annotation:MKPointAnnotation = MKPointAnnotation()
-            var longitude: String = String(stringInterpolation: "37.\(index)78834")
+            var longitude: String = String(stringInterpolation: "31.\(index)78834")
             
-            annotation.coordinate = CLLocationCoordinate2DMake(longitude._bridgeToObjectiveC().doubleValue, 122.406417)
+            annotation.coordinate = CLLocationCoordinate2DMake(longitude._bridgeToObjectiveC().doubleValue, 120.406417)
             annotations.append(annotation)
         }
         
@@ -78,8 +78,8 @@ class ViewController: UIViewController,MKMapViewDelegate {
         var locationCoordinate2D: CLLocationCoordinate2D = mapView.userLocation.coordinate
         for index in 1...12{
         
-            var latitude: String = String(stringInterpolation: "37.\(index)78834")
-            var longitude: String = String(stringInterpolation: "122.\(index)406417")
+            var latitude: String = String(stringInterpolation: "31.\(index)78834")
+            var longitude: String = String(stringInterpolation: "120.\(index)406417")
     
             
             polylines.append(CLLocationCoordinate2DMake(latitude._bridgeToObjectiveC().doubleValue, longitude._bridgeToObjectiveC().doubleValue))
